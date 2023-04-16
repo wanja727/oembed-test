@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>oEmbed-test</title>
+</head>
+<body>
+
+<input id="search" class="search" type="text"/>
+<input class="btn" type="button" value="추가" onclick="search();"/>
+
+<div id="content">
+
+<!--    <iframe width="200" height="113" src="https://www.youtube.com/embed/M3r2XDceM6A?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Amazing Nintendo Facts"></iframe>-->
+
+
+</div>
+
+<script type="text/javascript">
+    function search(){
+        // const url = document.getElementById("search").value;
+        url = "https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3DM3r2XDceM6A&format=json";
+        console.log("search 함수 실행")
+        $.ajax({
+            type: 'GET',
+            url: "/search",
+            data:{"url":url},
+            dataType:'text',
+            success:function (data){resultHtml(data);
+            },
+            error:function(error){
+                console.log(error);
+            }
+        })
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+</body>
+</html>
