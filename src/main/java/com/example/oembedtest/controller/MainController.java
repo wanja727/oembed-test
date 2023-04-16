@@ -29,12 +29,9 @@ public class MainController {
 
     @GetMapping("/search")
     @ResponseBody
-    public void search(HttpServletRequest request, Model model) throws IOException, ParseException {
-        log.info("search controller 작동");
+    public JSONObject search(HttpServletRequest request, Model model) throws IOException, ParseException {
         String url = request.getParameter("url");
-//        oembedserviceimpl.urlConnector(url);
-//        return
-                mainService.search(url);
+        return mainService.search(url);
     }
 
 }
