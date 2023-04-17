@@ -21,11 +21,8 @@ class MainServiceTest {
     @DisplayName("oembed api 호출")
     void search() throws ParseException {
 
-//        JSONObject jsonObject =
-                mainService.search("");
-
-//        log.info(jsonObject.toJSONString());
-
+        JSONObject jsonObject = mainService.search("https://www.youtube.com/watch?v=dBD54EZIrZo");
+        log.info(jsonObject.toJSONString());
     }
 
 }

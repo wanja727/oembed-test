@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>oEmbed-test</title>
@@ -11,35 +12,43 @@
         }
 
         td, th {
-            padding: 10px;
+            padding: 5px;
         }
-
-        /*xmp{*/
-        /*    vertical-align: middle;*/
-        /*    text-align: center;*/
-        /*    width: 85%;*/
-        /*    float: right;*/
-        /*    height: 50px;*/
-        /*    white-space: normal ;*/
-        /*}*/
     </style>
 </head>
+
 <body>
 
-<input id="search" class="search" type="text"/>
-<input class="btn" type="button" value="추가" onclick="search();"/>
+<input id="search" class="search" type="text" onkeyup="if(window.event.keyCode==13){search()}"/>
+<input class="btn" type="button" value="추가" onclick="search()"/>
+<input class="btn" type="button" value="embed삭제" onclick="clearContainer()"/>
 
-<div id="container">
+<div>샘플 url</div>
+<div><a href="#" onclick="sample(this.text)">https://www.youtube.com/watch?v=dBD54EZIrZo</a></div>
+<div><a href="#" onclick="sample(this.text)">https://www.instagram.com/p/BUawPlPF_Rx/</a></div>
+<div><a href="#" onclick="sample(this.text)">https://twitter.com/hellopolicy/status/867177144815804416</a></div>
+<div><a href="#" onclick="sample(this.text)">https://vimeo.com/20097015</a></div>
 
-<!--    <blockquote class="twitter-tweet"><p lang="ko" dir="ltr">[🎧] <a href="https://twitter.com/hashtag/JISOO?src=hash&amp;ref_src=twsrc%5Etfw">#JISOO</a> 의 첫싱글 앨범 [ME]가 지금 공개되었습니다!<br>함께 들으러 가볼까요?👇<br><br>멜론: <a href="https://t.co/K4VVE1kE5c">https://t.co/K4VVE1kE5c</a><br>지니: <a href="https://t.co/0hkI6uPSJp">https://t.co/0hkI6uPSJp</a><br>바이브: <a href="https://t.co/tFJCobQKfv">https://t.co/tFJCobQKfv</a><br>플로: <a href="https://t.co/2n7pv8Fo6h">https://t.co/2n7pv8Fo6h</a><br>벅스: <a href="https://t.co/e6e8h75Tcs">https://t.co/e6e8h75Tcs</a><a href="https://twitter.com/hashtag/%EC%A7%80%EC%88%98?src=hash&amp;ref_src=twsrc%5Etfw">#지수</a> <a href="https://twitter.com/hashtag/BLACKPINK?src=hash&amp;ref_src=twsrc%5Etfw">#BLACKPINK</a> <a href="https://twitter.com/hashtag/%EB%B8%94%EB%9E%99%ED%95%91%ED%81%AC?src=hash&amp;ref_src=twsrc%5Etfw">#블랙핑크</a> <a href="https://twitter.com/hashtag/FIRSTSINGLEALBUM?src=hash&amp;ref_src=twsrc%5Etfw">#FIRSTSINGLEALBUM</a> <a href="https://twitter.com/hashtag/ME?src=hash&amp;ref_src=twsrc%5Etfw">#ME</a></p>&mdash; BLACKPINK GLOBAL BLINK (@ygofficialblink) <a href="https://twitter.com/ygofficialblink/status/1641652736449212416?ref_src=twsrc%5Etfw">March 31, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>-->
-
-</div>
+<div id="container"></div>
 
 <script type="text/javascript">
+
+    // 서버로 url 전달하여 oEmbed요청
     function search() {
         const url = document.getElementById("search").value;
-        // url = "https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3DM3r2XDceM6A&format=json";
         console.log("입력받은 url : " + url);
+
+        // 입력받은 문자열이 url형식인지 정규표현식으로 체크
+        var regex = /^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]{2,6}(\:[0-9]+)?(\/\S*)?/;
+
+        if (regex.test(url)) {
+        } else {
+            alert('입력된 문자열이 url 형식이 아닙니다!');
+            // 입력창 clear
+            document.getElementById("search").value = '';
+            return
+        }
+
         $.ajax({
             type: 'GET',
             url: "/search",
@@ -54,54 +63,65 @@
         })
     }
 
-    // JSON data to HTML table
+    // 샘플 url 클릭시 search() 호출
+    function sample(url) {
+        document.getElementById("search").value = url;
+        search();
+    }
+
+    // container 비우기
+    function clearContainer() {
+        document.getElementById("container").replaceChildren();
+    }
+
+    // 서버로 부터 전달 받은 JSON 정보를 HTML table로 그려준다
     function convert(data) {
 
         let jsonData = data;
 
         console.log(jsonData);
 
-        // Get the container element where the table will be inserted
         let container = document.getElementById("container");
-
-        // Create the table element
         let table = document.createElement("table");
+        let rows = Object.entries(jsonData); // json Object를 [key, value] 값을 가지는 배열로 바꿔준다
 
-        // Get the keys (column names) of the first object in the JSON data
-        let rows = Object.entries(jsonData);
-
-        // Loop through the column names and create header cells
+        // 배열 루프 돌면서
         rows.forEach((item) => {
             let tr = document.createElement("tr");
+
+            // json 항목명 세팅 (author_name, provider_url, title..)
             let td = document.createElement("td");
-            td.innerText = item[0]; // Set the column name as the text of the header cell
+            td.innerText = item[0];
+            tr.appendChild(td);
+
+            // json 값 세팅
             let td2 = document.createElement("td");
-            tr.appendChild(td); // Append the header cell to the header row
+            td2.innerText = item[1];
 
+            // html, thumbnail_url 항목의 경우 미리보기 가능하도록 구현
             if (item[0] == "html") {
-                console.log("들어왔다!!!!!");
-
-                // let xmp = document.createElement("xmp");
-                // xmp.insertAdjacentHTML('beforeend',item[1]);
-
                 td2.insertAdjacentHTML('beforeend', item[1]);
+
             } else if (item[0] == "thumbnail_url") {
                 let img = document.createElement("img");
                 img.src = item[1];
 
                 td2.appendChild(img);
-            } else {
-                td2.innerText = item[1];
             }
-
             tr.appendChild(td2);
 
             table.append(tr);
         });
-        container.appendChild(table) // Append the table to the container element
 
+        // container.appendChild(table);
+        container.prepend(table); // 신규 추가건 위에 추가해 준다
+
+        // 트위터의 경우 load 호출해줘야 정상적으로 출력된다
         // twttr.widgets.load(valueDiv);
         twttr.widgets.load(container);
+
+        // 입력창 clear
+        document.getElementById("search").value = '';
     }
 
 </script>
