@@ -10,9 +10,11 @@
             border: 1px solid black;
             border-collapse: collapse;
         }
-
         td, th {
             padding: 5px;
+        }
+        #search {
+            width: 500px;
         }
     </style>
 </head>
@@ -54,11 +56,11 @@
             url: "/search",
             data: {"url": url},
             dataType: 'text',
-            success: function (data) {
+            success: function (data, status) {
                 convert(JSON.parse(data));
             },
-            error: function (error) {
-                console.log(error);
+            error: function (jqXHR, status, error) {
+                alert(jqXHR.responseText);
             }
         })
     }

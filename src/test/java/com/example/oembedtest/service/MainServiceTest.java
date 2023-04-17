@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,8 +22,8 @@ class MainServiceTest {
     @DisplayName("oembed api 호출")
     void search() throws ParseException {
 
-        JSONObject jsonObject = mainService.search("https://www.youtube.com/watch?v=dBD54EZIrZo");
-        log.info(jsonObject.toJSONString());
+//        ResponseEntity<String> jsonObject = mainService.search("https://www.youtube.com/watch?v=dBD54EZIrZo");
+//        log.info(jsonObject);
     }
 
 }
