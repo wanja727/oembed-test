@@ -24,6 +24,9 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Model model) {
+        // providers.json 파일 읽기
+
+
         return "main";
     }
 
