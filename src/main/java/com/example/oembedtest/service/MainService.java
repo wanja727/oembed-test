@@ -32,7 +32,7 @@ public class MainService {
 
         // 도메인명 추출 정규표현식
         String domain = "";
-//        String regex = "(?:https?:\\/\\/)?(?:www\\.)?([^\\.]+)\\.";
+        //String regex = "(?:https?:\\/\\/)?(?:www\\.)?([^\\.]+)\\.";
         String regex = "^(?:https?:\\/\\/)?(?:www\\.)?([^\\/]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(url);
@@ -41,7 +41,6 @@ public class MainService {
             domain = matcher.group(1);
             log.info("url에서 추출한 도메인명 : " + domain);
         } else {
-            domain = "";
             throw new RuntimeException("입력된 url에서 도메인명을 추출하지 못했습니다. url을 확인해주세요.");
         }
 
@@ -59,7 +58,7 @@ public class MainService {
             }
         }
 
-        log.info("BASE_URL : "+BASE_URL);
+        //log.info("BASE_URL : " + BASE_URL);
 
         if (BASE_URL.isBlank()) {
             throw new RuntimeException("현재 지원하지 않는 Provider 입니다.");
@@ -71,20 +70,10 @@ public class MainService {
         WebClient wc = WebClient.builder().uriBuilderFactory(factory).baseUrl(BASE_URL).build();
 
         String response = wc.get()
-                .uri(uriBuilder -> uriBuilder.queryParam("url", url).queryParam("format","json").build())
+                .uri(uriBuilder -> uriBuilder.queryParam("url", url).queryParam("format", "json").build())
                 .retrieve().bodyToMono(String.class).block();
 
-//        ResponseEntity<String> response = wc.get()
-//                .uri(uriBuilder -> uriBuilder.queryParam("url", url).build())
-//                .retrieve()
-//                .onStatus(HttpStatus::isError, clientResponse -> Mono.error(new Exception("에러 메세지"))).toEntity(String.class).block();
-
-        log.info("response : " + response);
-
-        // json String -> json Object
-//        JSONParser parser = new JSONParser();
-//        Object obj = parser.parse(response);
-//        JSONObject jsonObj = (JSONObject) obj;
+        //log.info("response : " + response);
 
         return response;
     }

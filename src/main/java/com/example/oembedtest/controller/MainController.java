@@ -24,9 +24,6 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Model model) {
-        // providers.json 파일 읽기
-
-
         return "main";
     }
 
@@ -38,17 +35,17 @@ public class MainController {
         String result = "";
         String errMsg = "";
 
-        try{
+        try {
             result = mainService.search(url);
 
-        } catch(WebClientResponseException e) {
-            if(e.getStatusCode() == HttpStatus.BAD_REQUEST){
-                errMsg = "해당 url로 oEmbed 요청시 에러가 발생했습니다. 주소를 확인해주세요.\n"+url;
+        } catch (WebClientResponseException e) {
+            if (e.getStatusCode() == HttpStatus.BAD_REQUEST || e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                errMsg = "해당 url로 oEmbed 요청시 에러가 발생했습니다. 주소를 확인해주세요.\n" + url;
                 return new ResponseEntity<String>(errMsg, HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<String>(e.getMessage(), e.getStatusCode());
 
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
         } catch (Exception e) {

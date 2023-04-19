@@ -1,6 +1,5 @@
 package com.example.oembedtest.util;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
