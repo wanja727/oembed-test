@@ -14,3 +14,8 @@ AWS 배포: http://52.79.222.224/main
 <ins>**여러 사이트로 부터 쉽게 embed 할 수 있도록 통일된 형식을 사용하는데 이것이 oEmbed이다.**</ins>  
 oEmbed를 이용하면 사이트별로 각각 제공하는 API를 활용해서 컨텐츠를 보여주는 것이 아니라. 하나의 통일된 형식으로 컨텐츠를 요청하고 응답을 받는다.  
 Provider별로 API 엔드포인트를 제공하고 있어서 해당 url로 컨텐츠 요청을 하면 json/xml 형태로 응답을 보내준다.  
+
+### 개발환경
+`Spring Boot`  
+`Bootstrap`  
+`jQuery`
