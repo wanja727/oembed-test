@@ -1,4 +1,4 @@
-### oEmbed를 사용해 보고자 만든 간단한 toy-project
+# oEmbed를 활용한 간단한 toy-project
 oEmbed를 이용하여서 각 Provider 별로 제공하는 컨텐츠를 json 형태로 받아와 화면에 출력해주었다.
 
 AWS 배포: http://52.79.222.224/main  
